@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
     container: {
         paddingVertical: SPACING * 4,
         flex: 1,
+        marginTop: 20,
     },
     headerContainer: {
         flexDirection: 'column',

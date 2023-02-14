@@ -55,14 +55,8 @@ const LoveScreen = () => {
                         <Image source={{uri: IMAGE_URL.pinkHeart}} style={styles.pinkHeart}/>
                     </View>
                     
-                    <Text style={styles.contentDescription}>Một
-                        năm qua là một năm đầy may mắn và ý nghĩa với anh, cám ơn em vì đã chọn ở bên anh.
-                        Năm mới đến đồng nghĩa anh lại có thể chăm sóc và yêu thương em nhiều hơn năm qua.
-                        Anh chúc em có nhiều sức khỏe, bình an và may mắn. Chúc em dù gặp bất kì hoàn cảnh nào em cũng
-                        là
-                        em lúc như ban đầu. Chúc anh có thể luôn có thể bên cạnh chăm sóc, yêu thương em. Chúc hai
-                        ta năm mới nào cũng yêu thương nhau nhiều hơn năm cũ.
-                        Yêu em .</Text>
+                    <Text style={styles.contentDescription}>5 tháng rồi nè, tưởng nhanh ai dè lâu quá chừng em ha. Mong rằng tụi mình sẽ hiểu nhau, yêu nhau hơn mỗi ngày. Chúc em luôn gặp may mắn, bình an, trở nên dịu dàng - với mỗi anh nè. Anh biết anh chưa đủ tốt, đủ trưởng thành, nhưng em tin anh, chỉ cần em luôn ở bên anh, anh sẽ dành cho em những điều tốt đẹp nhất.
+                         </Text>
                     
                     <View style={styles.contentInnerFooter}>
                         <Text style={styles.footerTitle}>Anh</Text>
@@ -115,7 +109,7 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
         alignItems: 'center',
-        position: 'relative'
+        position: 'relative',
     },
     pinkHeart: {
         width: 32,

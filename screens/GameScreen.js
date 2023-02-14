@@ -10,22 +10,19 @@ import CustomModal from "../components/UI/Modal";
 import {
     updatePressedItemIds,
     generateGameData,
-    checkWhetherGiftsIncludesIp14,
-    updateStartDay
 } from "../store/userSlice";
 import {Audio} from "expo-av";
 import { useRoute } from '@react-navigation/native';
-
+import {checkWhetherHaveIp14} from "../store/userSlice";
 const GameScreen = () => {
     const route = useRoute();
     const dispatch = useDispatch();
-    const {currentUser, pressedItemIds, startDay, gameData} = useSelector((state) => state.user);
+    const {currentUser, pressedItemIds, gameData} = useSelector((state) => state.user);
     const [isOpenGiftBox, setIsOpenGiftBox] = useState(false);
     const [rewardDescription, setRewardDescription] = useState("");
     const [rewardImage, setRewardImage] = useState("");
     const [isShowModal, setIsShowModal] = useState(false);
     const [isAuthorized, setIsAuthorized] = useState(true);
-    const [isShowExceedTurnModal, setIsShowExceedTurnModal] = useState(false);
     const [soundPlay, setSoundPlay] = useState(null);
     const scaleAnimation = useRef(new Animated.Value(1)).current;
     const rotateAnimation = useRef(new Animated.Value(0.5)).current;
@@ -58,28 +55,27 @@ const GameScreen = () => {
 
 
     useEffect(() => {
-        if(gameData.length > 0) {
-            dispatch(checkWhetherGiftsIncludesIp14());
-        }
-        if(pressedItemIds.length === 0) {
+
+        if(pressedItemIds?.length === 0) {
             dispatch(generateGameData());
+        }
+
+        if(gameData?.length > 0) {
+            dispatch(checkWhetherHaveIp14());
         }
     }, [])
 
     useEffect(() => {
         scale();
         rotate();
+        if(route.name === "GameScreen") {
         (async () => {
             const {sound} = await Audio.Sound.createAsync(require('../assets/music.mp3'));
             if (sound) {
                 setSoundPlay(sound);
             }
-            if(route.name === 'GameScreen'){
-                await sound.playAsync();
-            } else{
-                await sound.unloadAsync();
-            }
 
+            await sound.playAsync();
 
             return soundPlay
                 ? () => {
@@ -88,18 +84,16 @@ const GameScreen = () => {
                 }
                 : undefined;
         })();
-    }, [])
+
+        }
+    }, [route.name])
 
     const handleChooseGift = async (gift) => {
-        let today = new Date().getDate();
         if (!currentUser) {
             setIsAuthorized(false);
         } else if (pressedItemIds.includes(gift.id)) {
             console.log('You chose this gift')
-        } else if (today !== startDay) {
-            setIsShowExceedTurnModal(true);
-        } else if (today === startDay) {
-            setIsShowExceedTurnModal(false);
+        } else {
             const payload = {
                 username: currentUser.username,
                 userId: currentUser.id,
@@ -113,7 +107,6 @@ const GameScreen = () => {
                 setIsShowModal(true);
                 setRewardDescription(gift.description);
                 setRewardImage(gift.uri);
-                dispatch(updateStartDay(today + 1));
             }).catch((error) => {
                 console.log(error)
             });
@@ -127,11 +120,7 @@ const GameScreen = () => {
     const handleCloseAuthorizedModal = () => {
         setIsAuthorized(true);
     }
-    
-    const handleCloseExceedTurnModal = () => {
-        setIsShowExceedTurnModal(false);
-    }
-    
+
     
     return (
         <View style={styles.container}>
@@ -139,8 +128,6 @@ const GameScreen = () => {
                        rewardDescription={rewardDescription}/>
             <CustomModal isShowModal={!isAuthorized} onCloseModal={handleCloseAuthorizedModal}
                          description="Bạn cần đăng nhập để chơi game này."/>
-            <CustomModal isShowModal={isShowExceedTurnModal} onCloseModal={handleCloseExceedTurnModal}
-                         description="Em đã hết lượt chơi hôm nay rồi nha em yêu."/>
             <ImageBackground source={{uri: IMAGE_URL.gameBackground}} resizeMode="cover" style={styles.image}>
                 <FlatGrid
                     itemDimension={100}
@@ -195,7 +182,7 @@ export default GameScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        position: 'relative'
+        position: 'relative',
     },
     image: {
         flex: 1,

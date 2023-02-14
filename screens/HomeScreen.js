@@ -16,8 +16,8 @@ import {MEMORIES_DATA} from "../DATA/MemoriesData";
 import {FlatGrid} from "react-native-super-grid";
 
 import PreviewImage from "../components/UI/PreviewImage";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 const HomeScreen = () => {
     const navigation = useNavigation();
     const {currentUser} = useSelector((state) => state.user);
@@ -29,14 +29,15 @@ const HomeScreen = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
     const [totalImage, setTotalImage] = useState(0);
 
-    useEffect(() => {
+    useEffect(    () => {
+        // await AsyncStorage.clear()
         if (!currentUser) {
             navigation.navigate("Login");
         }
         const message = format24h();
         setGreeting(message);
         setLovingDateMessage(countDate());
-        
+
     }, [currentUser]);
     const handleLogin = () => {
         navigation.navigate("Login");

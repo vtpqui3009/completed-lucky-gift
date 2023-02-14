@@ -3,17 +3,16 @@ import {FlatList, StyleSheet, View, Text} from "react-native";
 import HistoryItem from "../components/History/HistoryItem";
 import {SPACING} from "../constants/Spacing";
 import {COLORS} from "../constants/Colors";
-import axios from "axios";
-
+import {getAllHistories} from "../service/HistoryService";
 const HistoryScreen = () => {
-    const [histories, setHistories] = useState([]);
+    const [histories,setHistories] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         (async () => {
             setIsLoading(true);
-            const response = await axios.get("https://lucky-gift.vercel.app/api/history/");
-            setHistories(response.data.histories);
+            const response = await getAllHistories();
+            setHistories(response);
             setIsLoading(false);
         })()
     }, [])
@@ -55,7 +54,8 @@ const styles = StyleSheet.create({
     history: {
         flex: 1,
         paddingVertical: SPACING / 2,
-        marginBottom: SPACING * 10
+        marginBottom: SPACING * 10,
+        marginTop: 20,
     },
     noticeTextWrapper: {
         width: '100%',

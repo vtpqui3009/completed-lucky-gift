@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
     },
     loadingText: {
         color: COLORS.primary,
-        fontWeight: 'bold',
-        fontSize: 17
+        fontWeight: 'bold'
     }
 });
